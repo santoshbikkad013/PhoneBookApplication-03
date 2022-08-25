@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,10 +53,14 @@ public class ContactController {
 
 	@GetMapping(value = "/getContactById/{cid}", produces = "application/json")
 	public ResponseEntity<Contact> getContactById(@PathVariable Integer cid) {
-		Contact contactById = contactServiceI.getContactById(cid);
-		return new ResponseEntity<Contact>(contactById, HttpStatus.OK);
-
-	}
+		 Optional<Contact> contactById = contactServiceI.getContactById(cid);
+		 System.out.println(contactById);
+		 if(contactById.isPresent()) {
+			 Contact contact = contactById.get();
+		return new ResponseEntity<>(contact, HttpStatus.OK);
+		 }else {
+			 return new ResponseEntity(HttpStatus.OK);
+	}}
 
 	@PutMapping(value = "/UpdateContact", consumes = "application/json")
 	public ResponseEntity<String> UpdateContact(@RequestBody Contact contact) {
