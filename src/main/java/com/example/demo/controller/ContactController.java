@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +17,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Contact;
 import com.example.demo.service.ContactServiceI;
+import com.example.demo.util.AppConstants;
+import com.example.demo.util.AppProps;
 
 @RestController
 public class ContactController {
 
 	@Autowired
 	private ContactServiceI contactServiceI;
+	
+	@Autowired
+	private AppProps appProps;
 
 	@PostMapping(value = "/saveContact", consumes = "application/json")
 	public ResponseEntity<String> saveContact(@RequestBody Contact contact) {
 
 		boolean saveContact = contactServiceI.saveContact(contact);
-
+		Map<String,String> messages = appProps.getMessages();
+		
 		if (saveContact == true) {
-			String msg = "Contact Saved Successfully";
+		
+			String msg = messages.get(AppConstants.SAVE_SUCCESS);
 			return new ResponseEntity<String>(msg, HttpStatus.OK);
 		} else {
-			String msg = "Contact  not Saved Successfully";
+			String msg = messages.get(AppConstants.SAVE_FAIL);
 			return new ResponseEntity<String>(msg, HttpStatus.BAD_REQUEST);
 		}
 
@@ -66,12 +74,15 @@ public class ContactController {
 	public ResponseEntity<String> UpdateContact(@RequestBody Contact contact) {
 
 		boolean saveContact = contactServiceI.updateContact(contact);
-
+  
+		  Map<String,String> messages = appProps.getMessages();
+		  
+		   
 		if (saveContact == true) {
-			String msg = "Contact Updated Successfully";
+			String msg = messages.get(AppConstants.UPDATE_SUCCESS);
 			return new ResponseEntity<String>(msg, HttpStatus.OK);
 		} else {
-			String msg = "Contact  not updated Successfully";
+			String msg = messages.get(AppConstants.UPDATE_FAIL);
 			return new ResponseEntity<String>(msg, HttpStatus.BAD_REQUEST);
 		}
 
@@ -82,10 +93,11 @@ public class ContactController {
 		
 		boolean deleteById = contactServiceI.deleteById(cid);
 		
+		Map<String,String> messages = appProps.getMessages();
 		if(deleteById) {
-			return new ResponseEntity<String>("Record deleted Successfully",HttpStatus.OK);
+			return new ResponseEntity<String>(messages.get(AppConstants.DELETE_SUCCESS),HttpStatus.OK);
 		}else {
-	 return new ResponseEntity<String>("Record not  deleted Successfully",HttpStatus.BAD_REQUEST);
+	 return new ResponseEntity<String>(messages.get(AppConstants.DELETE_FAIL),HttpStatus.BAD_REQUEST);
 		
 	}
 	

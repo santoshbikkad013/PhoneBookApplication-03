@@ -1,0 +1,37 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: PBA
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost/PhoneBookApp-03
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+      
+      
+app1:      
+   messages:
+     saveSuccess: Contact Saved 
+     saveFail : Contact Not saved Successfully
+     updateSuccess: Contact Updated Successfully
+     updateFail : Contact Not Updated Successfully
+     deleteSuccess: Record deleted successfully
+     deleteFail : record Not deletedSuccessfully
+      
+      
+      
+      
+      
+      
